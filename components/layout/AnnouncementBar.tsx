@@ -17,7 +17,7 @@ export function AnnouncementBar() {
         className="bg-gold text-charcoal py-2 px-4 relative flex items-center justify-center text-sm font-medium tracking-wide"
       >
         <p className="text-center w-full pr-8">
-          Free shipping on orders over £50 · Use code LUXE15 for 15% off
+          Free shipping on orders over £50 · Use code SOLENE15 for 15% off
         </p>
         <button
           onClick={() => setIsVisible(false)}
