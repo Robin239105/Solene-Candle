@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,6 +17,12 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const subtotal = getSubtotal();
+
+  useEffect(() => {
+    if (items.length === 0 && !isSuccess) {
+      router.push("/cart");
+    }
+  }, [items, isSuccess, router]);
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +57,6 @@ export default function CheckoutPage() {
   }
 
   if (items.length === 0 && !isSuccess) {
-    router.push("/cart");
     return null;
   }
 
