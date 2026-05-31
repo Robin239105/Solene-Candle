@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Solène Candle — Luxury Hand-Poured Candles
 
-## Getting Started
+A premium D2C e-commerce store built with **Next.js 14** (App Router), **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Zustand**.
 
-First, run the development server:
+> *Scent is a feeling. Make it yours.*
+
+![Solène Candle](public/images/hero_banner.png)
+
+## ✨ Features
+
+- **Premium Design** — Warm terracotta accent, elegant typography (Cormorant Garamond + DM Sans), Framer Motion animations throughout.
+- **Full E-Commerce Flow** — Shop, product detail pages, cart drawer, cart page, and mock checkout with order confirmation.
+- **Collections** — Browse candles by mood: Dark & Moody, Floral, Fresh & Clean, Warm & Cosy.
+- **Journal/Blog** — 3 full-length editorial articles with beautiful photography.
+- **Content Pages** — About (with timeline), FAQ (animated accordion), Contact (with form), Shipping & Returns, Privacy Policy, Terms & Conditions.
+- **Cart System** — Zustand-powered persistent cart with size selection, quantity control, and slide-out drawer.
+- **AI-Generated Imagery** — All product and editorial photography generated with AI.
+- **SEO Ready** — Open Graph tags, Twitter cards, structured metadata, semantic HTML.
+- **Responsive** — Fully responsive across mobile, tablet, and desktop.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A [Neon](https://neon.tech) PostgreSQL database (for production)
+
+### Installation
+
+```bash
+git clone https://github.com/your-username/solene-candle.git
+cd solene-candle
+npm install
+```
+
+### Environment Variables
+
+Copy the example env file and add your Neon database URL:
+
+```bash
+cp .env.example .env
+```
+
+```env
+DATABASE_URL="postgres://user:password@your-neon-endpoint.neon.tech/neondb?sslmode=require"
+```
+
+### Database Setup
+
+```bash
+npx prisma db push
+npx ts-node --compiler-options '{"module":"CommonJS"}' prisma/seed.ts
+```
+
+### Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> **Note:** The app includes a mock Prisma client (`lib/prisma.ts`) that returns static data so the frontend works without a database connection. To use a real database, replace it with the standard PrismaClient setup (see `lib/prisma.real.ts.example` below).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Deploy to Vercel
 
-## Learn More
+1. Push this repo to GitHub.
+2. Import it in [Vercel](https://vercel.com).
+3. Add `DATABASE_URL` to your Vercel environment variables.
+4. Deploy!
 
-To learn more about Next.js, take a look at the following resources:
+Prisma will auto-generate during the build step.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗂️ Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+├── page.tsx              # Home (10 sections)
+├── shop/page.tsx          # Shop with filters & sorting
+├── shop/[slug]/page.tsx   # Product detail
+├── collections/           # Collection listing & detail
+├── cart/page.tsx           # Cart overview
+├── checkout/page.tsx       # Mock checkout
+├── journal/               # Blog listing & posts
+├── about/page.tsx          # About (6 sections + timeline)
+├── faq/page.tsx            # Animated FAQ accordion
+├── contact/page.tsx        # Contact form
+├── shipping-returns/       # Shipping rates & return policy
+├── privacy/page.tsx        # Privacy policy
+├── terms/page.tsx          # Terms & conditions
+├── layout.tsx              # Root layout + SEO metadata
+└── globals.css             # Design tokens
+components/
+├── home/                  # Hero, FeaturedProducts, WhyChooseUs, etc.
+├── layout/                # Navbar, Footer, AnnouncementBar
+├── shop/                  # ProductCard, QuickView, Filters, Sort
+├── product/               # Gallery, Info, Tabs, Related
+├── cart/                  # CartDrawer, CartItem, EmptyCart
+└── ui/                    # Button, Input, Badge, Modal, etc.
+store/
+└── cartStore.ts           # Zustand cart state management
+lib/
+├── prisma.ts              # Mock Prisma client (static data)
+├── mockData.ts            # Product & collection data
+├── journalData.ts         # Blog post content
+└── utils.ts               # formatPrice, cn
+```
 
-## Deploy on Vercel
+## 🎨 Design Tokens
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--cream` | `#FAF7F2` | Primary background |
+| `--warm-white` | `#FEFCF8` | Card backgrounds |
+| `--charcoal` | `#1A1A1A` | Primary text |
+| `--warm-gray` | `#6B6460` | Secondary text |
+| `--gold` | `#C4956A` | Accent (warm terracotta) |
+| `--gold-light` | `#D9BFA7` | Accent hover |
+| `--blush` | `#F2E8E1` | Section backgrounds |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📄 License
+
+MIT

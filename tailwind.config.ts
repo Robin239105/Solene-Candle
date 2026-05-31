@@ -8,9 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['var(--font-cormorant)', 'serif'],
+        body: ['var(--font-dm-sans)', 'sans-serif'],
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        cream: '#FAF7F2',
+        'warm-white': '#FEFCF8',
+        charcoal: '#1A1A1A',
+        'warm-gray': '#6B6460',
+        gold: '#C4956A', // Warm terracotta
+        'gold-light': '#D9BFA7', // Soft sand
+        blush: '#F2E8E1',
       },
     },
   },
