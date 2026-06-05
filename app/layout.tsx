@@ -69,21 +69,26 @@ export const metadata: Metadata = {
   },
 };
 
+import { headers } from "next/headers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = headers().get("x-pathname") || "";
+  const isAdmin = pathname.startsWith("/admin");
+
   return (
     <html lang="en">
       <body
         className={`${cormorant.variable} ${dmSans.variable} font-body bg-cream text-charcoal antialiased min-h-screen flex flex-col`}
       >
-        <AnnouncementBar />
-        <Navbar />
+        {!isAdmin && <AnnouncementBar />}
+        {!isAdmin && <Navbar />}
         <main className="flex-grow">{children}</main>
-        <Footer />
-        <CartDrawer />
+        {!isAdmin && <Footer />}
+        {!isAdmin && <CartDrawer />}
       </body>
     </html>
   );

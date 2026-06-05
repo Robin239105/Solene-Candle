@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { formatPrice } from "@/lib/utils";
 import toast from "react-hot-toast";
 import { CheckCircle2 } from "lucide-react";
+import { createOrder } from "@/app/actions/adminActions";
 
 export default function CheckoutPage() {
   const { items, getSubtotal, clearCart } = useCartStore();
@@ -24,17 +25,55 @@ export default function CheckoutPage() {
     }
   }, [items, isSuccess, router]);
 
-  const handleCheckout = (e: React.FormEvent) => {
+  const handleCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Mock checkout process
-    setTimeout(() => {
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const address = formData.get("address") as string;
+    const city = formData.get("city") as string;
+    const postcode = formData.get("postcode") as string;
+
+    try {
+      const orderItems = items.map((item) => ({
+        productId: item.id,
+        productName: item.name,
+        size: item.size,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
+      const res = await createOrder({
+        email,
+        firstName,
+        lastName,
+        address,
+        city,
+        postcode,
+        country: "United Kingdom",
+        phone,
+        total: subtotal,
+        items: orderItems,
+      });
+
+      if (res.success) {
+        setIsProcessing(false);
+        setIsSuccess(true);
+        clearCart();
+        toast.success("Order placed successfully!");
+      } else {
+        toast.error("Failed to place order.");
+        setIsProcessing(false);
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred during checkout.");
       setIsProcessing(false);
-      setIsSuccess(true);
-      clearCart();
-      toast.success("Order placed successfully!");
-    }, 2000);
+    }
   };
 
   if (isSuccess) {
@@ -76,17 +115,20 @@ export default function CheckoutPage() {
             <form onSubmit={handleCheckout} className="flex flex-col gap-8">
               <div>
                 <h2 className="text-xl font-heading mb-4">Contact Information</h2>
-                <Input type="email" placeholder="Email address" required className="bg-white" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Input type="email" name="email" placeholder="Email address" required className="bg-white" />
+                  <Input type="tel" name="phone" placeholder="Phone number" required className="bg-white" />
+                </div>
               </div>
 
               <div>
                 <h2 className="text-xl font-heading mb-4">Shipping Address</h2>
                 <div className="grid grid-cols-2 gap-4">
-                  <Input placeholder="First name" required className="bg-white" />
-                  <Input placeholder="Last name" required className="bg-white" />
-                  <Input placeholder="Address line 1" required className="col-span-2 bg-white" />
-                  <Input placeholder="City" required className="bg-white" />
-                  <Input placeholder="Postal code" required className="bg-white" />
+                  <Input name="firstName" placeholder="First name" required className="bg-white" />
+                  <Input name="lastName" placeholder="Last name" required className="bg-white" />
+                  <Input name="address" placeholder="Address line 1" required className="col-span-2 bg-white" />
+                  <Input name="city" placeholder="City" required className="bg-white" />
+                  <Input name="postcode" placeholder="Postal code" required className="bg-white" />
                 </div>
               </div>
               
